@@ -1,0 +1,49 @@
+version: "3"
+services:
+    node: 
+        build:
+            context: .
+            dockerfile: ./images/node/Dockerfile
+        working_dir: /src/app
+        volumes:
+            - ./package.json:/src/app/package.json
+            - ./bin:/src/app/bin
+        expose:
+            - "5000"
+            - "8080"
+        ports:
+            - "5000:5000"
+            - "8080:8080"
+        networks:
+            - webnet
+        env_file:
+            - ./env/server.env
+        environment:
+            DB_HOST: postgres
+            REDIS_HOST: redis
+            REDIS_POST: 6379
+            PORT: 5000
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DB: api
+        command: "nodemon --inspect=0.0.0.0:8080 --watch bin"
+    postgres: 
+        image: postgres
+        volumes: 
+            - ./pgdata:/var/lib/postgresql/data
+        networks:
+            - webnet
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DB: api
+        ports: 
+            - "5001:5432"
+    redis:
+        image: "redis"
+        networks:
+            - webnet
+        ports:
+            - "6379:6379"
+networks: 
+    webnet: 
