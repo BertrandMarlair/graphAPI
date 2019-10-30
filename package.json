@@ -48,7 +48,7 @@
     "lodash": "^4.17.14",
     "luxon": "^1.17.1",
     "pg": "^7.11.0",
-    "sequelize": "^5.10.1",
+    "sequelize": "^5.15.1",
     "winston": "^3.2.1"
   },
   "lint-staged": {
